@@ -97,25 +97,27 @@
             align-items: center;
             text-align: center;
             padding: 20px;
-            transition: opacity 0.8s ease;
+            transition: all 0.6s ease;
             backdrop-filter: blur(3px);
+            transform: translateY(20px);
         }
 
         .card-photo:hover .overlay {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        .overlay h5 {
-            font-weight: 600;
-            color: #ffc1cc;
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
-
+        .overlay h5,
         .overlay p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #fffafc;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .card-photo:hover .overlay h5,
+        .card-photo:hover .overlay p {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         footer {
@@ -234,7 +236,9 @@
                 'Dalam diam, aku belajar bahwa kehadiranmu adalah bentuk tenang yang tak pernah aku duga.'
             ],
             ['Cerita Kita', 'Mungkin sederhana, tapi aku senang pernah menjadi bagian kecil dari ceritamu.'],
-            ['Cerita yang Tak Biasa', 'Tentang pertemuan yang biasa saja, namun perlahan menjadi kisah yang tak ingin dilupakan.']
+            ['Cerita yang Tak Biasa',
+                'Tentang pertemuan yang biasa saja, namun perlahan menjadi kisah yang tak ingin dilupakan.'
+            ]
         ];
 
 
