@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galeri Keindahan Dari Ainun</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #ffe6f2, #fff);
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+        }
+
+        .container h1 {
+            font-weight: 700;
+            color: #e63972;
+            letter-spacing: 1px;
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .text-muted {
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .card-photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            background: #fff;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s ease;
+        }
+
+        .card-photo.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-photo img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            transition: transform 1.2s ease;
+        }
+
+        .card-photo:hover img {
+            transform: scale(1.07);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            color: #fff;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.8s ease;
+            backdrop-filter: blur(3px);
+        }
+
+        .card-photo:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay h5 {
+            font-weight: 600;
+            color: #ffc1cc;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .overlay p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #fffafc;
+        }
+
+        footer {
+            text-align: center;
+            margin: 50px 0 30px;
+        }
+
+        .credit-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff9eb5, #ff7ba2);
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 12px 35px;
+            border-radius: 40px;
+            box-shadow: 0 4px 20px rgba(255, 123, 162, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .credit-btn:hover {
+            background: linear-gradient(90deg, #ffb6c1, #ff7ea8);
+            box-shadow: 0 0 30px rgba(255, 182, 193, 0.7);
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        /* Efek bunga berjatuhan (lebih lembut) */
+        .flower {
+            position: fixed;
+            top: -10px;
+            font-size: 16px;
+            animation: fall ease-in infinite;
+            z-index: 999;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            90% {
+                transform: translateY(100vh) rotate(270deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Tombol Musik */
+        #musicControl {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #ff8fb1;
+            border: none;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        #musicControl:hover {
+            transform: scale(1.1);
+            background: #ff6f91;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container text-center my-4">
+        <h1>Galeri Keindahan Dari Ainun</h1>
+        <p class="text-muted">Sebuah kisah lembut tentang perkenalan seperti bunga yang perlahan tumbuh indah</p>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="https://www.linkedin.com/in/muhammad-riski-fauzi-937168259/" class="credit-btn">
+            🌷 Created by Muhammad Riski Fauzi
+        </a>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+
+    <!-- Musik -->
+    <audio id="bgMusic" src="ainun.mp3" autoplay loop></audio>
+    <button id="musicControl">🔇</button>
+
+    <script>
+        // Daftar caption
+        const captions = [
+            ['Awal Perkenalan',
+                'Semua terasa sederhana saat pertama kali kita berbicara, tapi entah kenapa terasa begitu nyaman.'
+            ],
+            ['Langkah Pertama',
+                'Tak pernah terpikir sebelumnya, bahwa obrolan ringan bisa membawa arti baru dalam hidup.'
+            ],
+            ['Tatapan Singkat', 'Sekilas pandang itu cukup untuk membuat hati tahu bahwa ini bukan pertemuan biasa.'],
+            ['Rasa yang Tumbuh', 'Pelan-pelan, perhatian kecilmu mulai terasa seperti kebiasaan yang aku rindukan.'],
+            ['Cerita Kecil', 'Kita tidak perlu banyak kata, cukup tertawa bersama, itu sudah cukup berarti.'],
+            ['Waktu Bersama', 'Beberapa momen sederhana bisa jadi kenangan yang paling sulit dilupakan.'],
+            ['Suara Lembut', 'Ada tenang dalam suaramu, seolah dunia ikut berhenti mendengarkan.'],
+            ['Langit Senja', 'Di bawah warna jingga sore, aku menyadari bahwa setiap detik bersamamu terasa istimewa.'],
+            ['Senyum Itu', 'Senyummu seperti alasan kecil yang cukup untuk membuat hari terasa lebih baik.'],
+            ['Rindu Ringan', 'Bukan rindu yang berlebihan, hanya ingin tahu kabarmu tanpa perlu banyak kata.'],
+            ['Waktu yang Tenang',
+                'Dalam diam, aku belajar bahwa kehadiranmu adalah bentuk tenang yang tak pernah aku duga.'
+            ],
+            ['Cerita Kita', 'Mungkin sederhana, tapi aku senang pernah menjadi bagian kecil dari ceritamu.'],
+            ['Cerita yang Tak Biasa', 'Tentang pertemuan yang biasa saja, namun perlahan menjadi kisah yang tak ingin dilupakan.']
+        ];
+
+
+        // Generate foto (skip ke-4)
+        const gallery = document.getElementById('gallery');
+        captions.forEach((item, i) => {
+            if (i + 1 === 4) return; // lewati foto ke-4
+            const div = document.createElement('div');
+            div.className = 'card-photo';
+            div.innerHTML = `
+        <img src="${i+1}.jpg" alt="Foto ${i+1}">
+        <div class="overlay">
+          <h5>${item[0]}</h5>
+          <p>${item[1]}</p>
+        </div>`;
+            gallery.appendChild(div);
+        });
+
+        // Efek bunga jatuh (lebih tenang)
+        const bunga = ['🌸', '🌷', '💮', '🌺'];
+
+        function buatBunga() {
+            const flower = document.createElement('div');
+            flower.classList.add('flower');
+            flower.textContent = bunga[Math.floor(Math.random() * bunga.length)];
+            flower.style.left = Math.random() * 100 + 'vw';
+            flower.style.fontSize = 14 + Math.random() * 8 + 'px';
+            flower.style.animationDuration = 8 + Math.random() * 5 + 's';
+            flower.style.opacity = 0.5 + Math.random() * 0.3;
+            document.body.appendChild(flower);
+            setTimeout(() => flower.remove(), 12000);
+        }
+        setInterval(buatBunga, 5000); // lebih jarang
+
+        // Fade-in saat scroll
+        const cards = document.querySelectorAll('.card-photo');
+
+        function checkVisibility() {
+            const triggerBottom = window.innerHeight * 0.85;
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < triggerBottom) {
+                    card.classList.add('visible');
+                }
+            });
+        }
+        window.addEventListener('scroll', checkVisibility);
+        window.addEventListener('load', checkVisibility);
+
+        // Kontrol Musik
+        const music = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicControl');
+        let isPlaying = false;
+
+        btn.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                btn.textContent = '🔇';
+            } else {
+                music.play();
+                btn.textContent = '🎵';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+
+</body>
+
+</html>
